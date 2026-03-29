@@ -1,4 +1,4 @@
-package com.LoopLink.pipeHub;
+package com.LoopLink.pipeHub.controller;
 
 import com.LoopLink.pipeHub.response.Result;
 import org.springframework.web.bind.annotation.PostMapping;

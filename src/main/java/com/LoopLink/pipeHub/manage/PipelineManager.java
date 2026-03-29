@@ -24,7 +24,7 @@ import java.util.concurrent.atomic.AtomicReference;
 @Component
 @RequiredArgsConstructor
 public class PipelineManager {
-    private static final String DICTIONARY = "pipelines";
+    private static final String DICTIONARY = "pipeline";
     private static final String DATA = "/static/data.json";
     private static final Path RECORDS = Paths.get(DICTIONARY, DATA);
     private static final ClassPathResource CLASSPATH_RESOURCE = new ClassPathResource(DATA);
