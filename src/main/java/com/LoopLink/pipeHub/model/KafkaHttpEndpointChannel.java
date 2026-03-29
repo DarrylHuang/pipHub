@@ -1,6 +1,8 @@
 package com.LoopLink.pipeHub.model;
 
 import com.LoopLink.pipeHub.enums.AuthKeyEnum;
+import com.LoopLink.pipeHub.utils.JsonUtil;
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -99,8 +101,9 @@ public class KafkaHttpEndpointChannel {
                 httpAgent.execute(post, response -> {
                     int status = response.getStatusLine().getStatusCode();
                     if (status >= 200 && status < 300) {
-                        EntityUtils.toString(response.getEntity());
-                        return true;
+                        String res = EntityUtils.toString(response.getEntity());
+                        JsonNode responseEntity = JsonUtil.toJson(res);
+                        return responseEntity.get("code").asInt() == 200;
                     } else {
                         throw new RuntimeException("HTTP request failed with status: " + status);
                     }
