@@ -85,10 +85,9 @@ public class KafkaHttpEndpointChannel {
 
         int attempt = 0;
         boolean success = false;
-        while (!success && attempt < POST_MAX_RETRY) {
+        do {
             attempt++;
             try {
-
                 String url = httpEndpoint.getUrl();
                 HttpPost post = new HttpPost(url);
                 post.setHeader("Content-Type", "application/json");
@@ -118,7 +117,7 @@ public class KafkaHttpEndpointChannel {
                     return;
                 }
             }
-        }
+        } while (!success && attempt < POST_MAX_RETRY);
 
         if (!success) {
             log.error("{} failed to send message after {} attempts: {}", channelName, POST_MAX_RETRY, message);

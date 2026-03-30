@@ -17,7 +17,7 @@ public class KafkaConfig {
 
     public Properties toConsumerProperties() {
         if (this.groupId == null || StringUtils.isBlank(this.groupId)) {
-            groupId = "charging-station-group";
+            groupId = "default-group";
         }
 
         Properties props = new Properties();
