@@ -102,7 +102,12 @@ public class KafkaHttpEndpointChannel {
                     if (status >= 200 && status < 300) {
                         String res = EntityUtils.toString(response.getEntity());
                         JsonNode responseEntity = JsonUtil.toJson(res);
-                        return responseEntity.get("code").asInt() == 200;
+                        status = responseEntity.get("code").asInt();
+                        if (status == 200) {
+                            return true;
+                        } else {
+                            throw new RuntimeException("HTTP request failed with status: " + status);
+                        }
                     } else {
                         throw new RuntimeException("HTTP request failed with status: " + status);
                     }
