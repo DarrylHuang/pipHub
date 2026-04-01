@@ -6,10 +6,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.system.ApplicationHome;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -24,11 +26,17 @@ import java.util.concurrent.atomic.AtomicReference;
 @Component
 @RequiredArgsConstructor
 public class PipelineManager {
-    private static final String EXTERNAL_DICTIONARY = "pipeline";
     private static final String DATA = "data.json";
-    private static final Path RECORDS = Paths.get(EXTERNAL_DICTIONARY, DATA);
+    private static final Path RECORDS;
     private static final ClassPathResource CLASSPATH_RESOURCE = new ClassPathResource("/static" + "/" + DATA);
     private static final ObjectMapper MAPPER = new ObjectMapper();
+
+    static {
+        ApplicationHome home = new ApplicationHome(PipelineManager.class);
+        File jarFile = home.getSource();
+        File dir = jarFile.getParentFile();
+        RECORDS = dir.toPath().resolve("pipeline").resolve("data.json");
+    }
 
     private final AtomicReference<PipelineInfo> infoRef = new AtomicReference<>(new PipelineInfo(Collections.emptyList(), LocalDateTime.now()));
 
@@ -58,11 +66,14 @@ public class PipelineManager {
     private InputStream getDataInputStream() throws IOException {
         if (Files.exists(RECORDS)) {
             useExternal = true;
+            log.info("Pipeline data use {} path resolved to: {}", "outer", RECORDS.toAbsolutePath());
             return Files.newInputStream(RECORDS);
         } else if (CLASSPATH_RESOURCE.exists()) {
+            log.warn("Pipeline data use {} path resolved to: {}", "inner", CLASSPATH_RESOURCE.getPath());
             useExternal = false;
             return CLASSPATH_RESOURCE.getInputStream();
         } else {
+            log.info("Pipeline data is missing.");
             return null;
         }
     }

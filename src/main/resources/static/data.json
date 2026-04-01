@@ -1,7 +1,7 @@
 [
   {
     "kafkaConfig": {
-      "servers": "172.27.199.161:9092",
+      "servers": "172.27.199.166:9092",
       "topics": "send-center-sms",
       "groupId": "send-center-sms-group"
     },
