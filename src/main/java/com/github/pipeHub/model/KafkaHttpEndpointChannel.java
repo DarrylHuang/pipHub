@@ -45,12 +45,12 @@ public class KafkaHttpEndpointChannel {
     }
 
     public void link() {
-        Thread thread = new Thread(this::pollLoop, channelName);
+        Thread thread = new Thread(this::loopDispatch, channelName);
         thread.setDaemon(true);
         thread.start();
     }
 
-    private void pollLoop() {
+    private void loopDispatch() {
         log.info("{} started consuming from topics {}", channelName, kafkaConfig.getTopics());
         try {
             while (true) {
@@ -129,7 +129,7 @@ public class KafkaHttpEndpointChannel {
         }
     }
 
-    public void stop() {
+    public void shutdown() {
         try {
             consumer.wakeup();
         } catch (Exception e) {
