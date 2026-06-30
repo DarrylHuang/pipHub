@@ -2,7 +2,7 @@
 
 > 一个轻量级的 Kafka → HTTP 消息转发中间件，将 Kafka Topic 中的消息实时投递到指定的 HTTP 端点。
 
-> p.s.暂时这个工程只是个原型，未来可能会支持多种数据组件间的数据实时流 
+> P.S.暂时这个工程只是个原型，未来可能会支持多种数据组件间的数据实时流 
 
 ---
 
@@ -111,19 +111,19 @@ Pipeline 定义文件 `data.json` 结构如下：
     },
     "httpEndPointConfig": {
       "url": "http://your-api-endpoint/path",
-      "authKey": "Authorization"
+      "authKey": "your-http-endpoint-authKey"
     }
   }
 ]
 ```
 
-| 字段 | 说明 |
-|---|---|
-| `kafkaConfig.bootstrapServer` | Kafka Broker 地址 |
-| `kafkaConfig.groupId` | Consumer Group ID |
-| `kafkaConfig.topic` | 订阅的 Topic 名称 |
-| `httpEndPointConfig.url` | 目标 HTTP 端点 URL |
-| `httpEndPointConfig.authKey` | 认证头类型（`Authorization` 或 `X-Proxy-Token`）|
+| 字段 | 说明                                            |
+|---|-----------------------------------------------|
+| `kafkaConfig.bootstrapServer` | Kafka Broker 地址                               |
+| `kafkaConfig.groupId` | Consumer Group ID                             |
+| `kafkaConfig.topic` | 订阅的 Topic 名称                                  |
+| `httpEndPointConfig.url` | 目标 HTTP 端点 URL                                |
+| `httpEndPointConfig.authKey` | 认证头类型（`Authorization` 或 `X-Proxy-Token`）可按需扩展 |
 
 **外部配置覆盖**：将 `data.json` 放置在 JAR 包同级目录的 `pipeline/` 文件夹下，应用优先读取外部文件，无需重新打包即可修改 Pipeline 配置。
 
